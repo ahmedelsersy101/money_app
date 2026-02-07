@@ -79,15 +79,6 @@ class TransactionList extends StatelessWidget {
                         context,
                       ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      DateFormat(
-                        'yyyy/MM/dd',
-                        context.locale.toString(),
-                      ).format(entry.value.first.date),
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
-                    ),
                   ],
                 ),
                 SizedBox(height: 8.h),

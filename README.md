@@ -35,16 +35,11 @@ A professional, modern personal finance management application built with Flutte
 
 ---
 
-## 📸 Screenshots
+## 🌟 App Screenshots | صور التطبيق
 
-|                             Onboarding                             |                      Home Screen                       |                           Wallets                            |
-| :----------------------------------------------------------------: | :----------------------------------------------------: | :----------------------------------------------------------: |
-| ![Onboarding](https://via.placeholder.com/200x400?text=Onboarding) | ![Home](https://via.placeholder.com/200x400?text=Home) | ![Wallets](https://via.placeholder.com/200x400?text=Wallets) |
-
-|                         Add Transaction                          |                           Reports                            |                            Settings                            |
-| :--------------------------------------------------------------: | :----------------------------------------------------------: | :------------------------------------------------------------: |
-| ![Add](https://via.placeholder.com/200x400?text=Add+Transaction) | ![Reports](https://via.placeholder.com/200x400?text=Reports) | ![Settings](https://via.placeholder.com/200x400?text=Settings) |
-
+<div align="center">
+  <img src="assets/expenses_banner.jpg" alt="App Banner" width="100%" style="border-radius: 12px;" />
+</div>
 ---
 
 ## 🛠️ Getting Started
@@ -107,4 +102,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙌 Implementation
 
 Made with ❤️ by [Ahmed Elsersy](https://github.com/ahmedelsersy) (and Antigravity AI)
+
 # money_app

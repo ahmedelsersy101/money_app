@@ -45,9 +45,8 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       _selectedAccountKey = t.accountKey;
       _selectedDate = t.date;
       _selectedTime = TimeOfDay.fromDateTime(t.date);
-      _isIncome = t.isIncome;
-
       final cat = CategoryUtils.getCategory(_selectedCategoryKey);
+      _isIncome = cat.isIncome;
       _selectedCategorySvg = cat.imagePath;
       _selectedCategoryIcon = cat.icon ?? Icons.category;
     } else {
@@ -231,10 +230,6 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               ),
               SizedBox(height: 30.h),
 
-              // Notes Input
-              // _buildNotesInput(),
-              SizedBox(height: 40.h),
-
               // Save Button
               _buildSaveButton(isEditing),
             ],
@@ -245,6 +240,11 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   }
 
   Widget _buildIncomeExpenseToggle() {
+    final cat = CategoryUtils.getCategory(_selectedCategoryKey);
+    final categoryIsIncome = cat.isIncome;
+    final canSelectExpenses = !categoryIsIncome;
+    final canSelectIncome = categoryIsIncome;
+
     return Container(
       height: 40.h,
       decoration: BoxDecoration(
@@ -261,63 +261,75 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       child: Row(
         children: [
           Expanded(
-            child: GestureDetector(
-              onTap: () => setState(() => _isIncome = false),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: !_isIncome ? Colors.red : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.arrow_downward,
-                      color: !_isIncome ? Colors.white : Colors.grey,
-                      size: 16.sp,
+            child: IgnorePointer(
+              ignoring: !canSelectExpenses,
+              child: Opacity(
+                opacity: canSelectExpenses ? 1 : 0.4,
+                child: GestureDetector(
+                  onTap: canSelectExpenses ? () => setState(() => _isIncome = false) : null,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: !_isIncome ? Colors.red : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'expenses'.tr(),
-                      style: TextStyle(
-                        color: !_isIncome ? Colors.white : Colors.grey,
-                        fontWeight: !_isIncome ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 16.sp,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.arrow_downward,
+                          color: !_isIncome ? Colors.white : Colors.grey,
+                          size: 16.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Text(
+                          'expenses'.tr(),
+                          style: TextStyle(
+                            color: !_isIncome ? Colors.white : Colors.grey,
+                            fontWeight: !_isIncome ? FontWeight.bold : FontWeight.normal,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
           Expanded(
-            child: GestureDetector(
-              onTap: () => setState(() => _isIncome = true),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: _isIncome ? Colors.green : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.arrow_upward,
-                      color: _isIncome ? Colors.white : Colors.grey,
-                      size: 16.sp,
+            child: IgnorePointer(
+              ignoring: !canSelectIncome,
+              child: Opacity(
+                opacity: canSelectIncome ? 1 : 0.4,
+                child: GestureDetector(
+                  onTap: canSelectIncome ? () => setState(() => _isIncome = true) : null,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: _isIncome ? Colors.green : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'income'.tr(),
-                      style: TextStyle(
-                        color: _isIncome ? Colors.white : Colors.grey,
-                        fontWeight: _isIncome ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 16.sp,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.arrow_upward,
+                          color: _isIncome ? Colors.white : Colors.grey,
+                          size: 16.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Text(
+                          'income'.tr(),
+                          style: TextStyle(
+                            color: _isIncome ? Colors.white : Colors.grey,
+                            fontWeight: _isIncome ? FontWeight.bold : FontWeight.normal,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -368,7 +380,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16.r),
       child: Container(
-        height: 60.h,
+        height: 62.h,
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -396,16 +408,22 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      label,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                    ),
                   ),
                   SizedBox(height: 2.h),
-                  Text(
-                    value,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      value,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),
@@ -456,7 +474,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   Widget _buildSaveButton(bool isEditing) {
     return SizedBox(
       width: double.infinity,
-      height: 45.h,
+      height: 50.h,
       child: ElevatedButton(
         onPressed: () {
           final amount = double.tryParse(_amountController.text);
@@ -467,6 +485,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
             return;
           }
 
+          final categoryIsIncome = CategoryUtils.getCategory(_selectedCategoryKey).isIncome;
           final transaction = TransactionModel(
             id: isEditing ? widget.transactionToEdit!.id : const Uuid().v4(),
             title: _selectedCategoryKey,
@@ -478,7 +497,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               _selectedTime.hour,
               _selectedTime.minute,
             ),
-            isIncome: _isIncome,
+            isIncome: categoryIsIncome,
             categoryKey: _selectedCategoryKey,
             accountKey: _selectedAccountKey,
             notes: _notesController.text.isEmpty ? null : _notesController.text,
@@ -497,9 +516,11 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           elevation: 5,
           shadowColor: Theme.of(context).primaryColor.withOpacity(0.4),
         ),
-        child: Text(
-          isEditing ? 'update'.tr() : 'add'.tr(),
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        child: Center(
+          child: Text(
+            isEditing ? 'update'.tr() : 'add'.tr(),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          ),
         ),
       ),
     );

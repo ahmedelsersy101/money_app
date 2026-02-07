@@ -54,14 +54,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: _currentIndex == 0
-            ? [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.notifications_none, color: Theme.of(context).iconTheme.color),
-                ),
-              ]
-            : [],
       ),
       body: SafeArea(child: _pages[_currentIndex]),
       bottomNavigationBar: CustomBottomNavBar(
